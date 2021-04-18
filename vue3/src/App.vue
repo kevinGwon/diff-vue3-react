@@ -1,7 +1,7 @@
 <template>
   <div v-for="(label, index) in stateLabels" :key="index">
     <label :for="label">{{ label }}</label>
-    <input type="checkbox" :value="label" @click="onChangeStates" :id="label" />
+    <input type="checkbox" :value="label" :checked="selectedStates.includes(label)" @click="onChangeStates" :id="label" />
   </div>
   <br />
   <br />
@@ -11,10 +11,17 @@
     <input
       type="checkbox"
       :value="label"
+      :checked="selectedCategorys.includes(label)"
       @click="onChangeCategorys"
       :id="label"
     />
   </div>
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <strong>Selected : {{params}}</strong>
 </template>
 
 <script>
@@ -27,10 +34,10 @@ export default {
     const { params } = useQueryParams();
 
     const stateLabels = ['ongoing', 'pending', 'ended'];
-    const selectedCategorys = ref([]);
+    const selectedCategorys = ref(params.value.category ? params.value.category.split(',') : []);
 
     const categoryLabels = ['cooking', 'hair', 'design'];
-    const selectedStates = ref([]);
+    const selectedStates = ref(params.value.state ? params.value.state.split(',') : []);
 
     const onChangeCategorys = (event) => {
       const category = event.target.id;
@@ -57,6 +64,7 @@ export default {
     };
 
     return {
+      params,
       stateLabels,
       categoryLabels,
       selectedCategorys,
